@@ -1,0 +1,27 @@
+.todo-header {
+	position: relative;
+	padding: 0 15px;
+}
+
+i.icon-toggle {
+	top: 12px;
+	left: -10px;
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	border-bottom: 2px solid rgba(0, 0, 0, .6);
+	border-right: 2px solid rgba(0, 0, 0, .6);
+	transform: rotate(45deg);
+}
+
+.create-input {
+	width: 100%;
+	height: 40px;
+	padding: 8px 10px;
+	font-size: 20px;
+	border: none;
+}
+
+::placeholder {
+	font-style: italic;
+}
