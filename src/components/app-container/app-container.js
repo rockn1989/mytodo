@@ -8,17 +8,31 @@ export default class App extends Component {
 
 	constructor() {
 		super();
+		this.itemId = 100;
 		this.state = {
-			todos: []
+			todos: [
+				{
+					val: `test`,
+					done: false,
+					id: 1
+				},
+				{
+					val: `test2`,
+					done: true,
+					id: 2
+				}
+			]
 		};
 
 		this.onItemAdded = this.onItemAdded.bind(this);
+		this.onDone = this.onDone.bind(this);
 	};
 
 	onItemAdded(item) {
 		const newItem = {
-			label: item,
-			done: false
+			val: item,
+			done: false,
+			id: ++this.itemId
 		};
 
 		this.setState(({todos}) => {
@@ -30,13 +44,36 @@ export default class App extends Component {
 		});
 	};
 
+	onDone(idx) {
+		this.setState(({todos}) => {
+			const todoId = todos.findIndex((el) => el.id === idx);
+			const oldItem = todos[todoId];
+			const newItem = {
+				...oldItem,
+				done: !oldItem.done
+			};
+
+			return {
+				todos: [
+					...todos.slice(0, todoId), 
+					newItem, 
+					...todos.slice(todoId + 1)
+				]
+			}
+		});
+	}
+
 	render() {
 		const todos = this.state.todos;
-		console.log(todos);
 		return (
 			<div className="todo">
 				<ItemAddForm onItemAdded={this.onItemAdded}/>
-				<TodoList/>
+				{todos.length > 0 &&
+					<TodoList 
+						todos={todos}
+						onDone={this.onDone}
+					/>
+				}
 			</div>
 		);
 	}

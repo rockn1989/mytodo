@@ -1,10 +1,17 @@
 import React, { Component } from "react";
+import TodoListItem from '../todo-list-item';
 import "./todo-list.css";
 
 export default class TodoList extends Component {
 	render() {
+		const { todos, onDone } = this.props;
 		return (
-			<ul className="todo-list"></ul>
+			<ul className="todo-list">
+				<TodoListItem 
+					todos={todos}
+					onDone={onDone}
+				/>
+			</ul>
 		);
 	}
 };
