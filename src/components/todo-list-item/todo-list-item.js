@@ -1,21 +1,23 @@
 import React, {Component} from 'react';
+import Events from '../events';
+import EditForm from '../edit-form';
 import './todo-list-item.css';
 
 export default class TodoListItem extends Component {
 	constructor() {
 		super();
-		this.onChecked = this.onChecked.bind(this);
-
+		this.state = {
+			edit: false
+		}
+		this.onEdit = this.onEdit.bind(this);
 	};
 
-	onChecked() {
+	onEdit(status) {
 
 	}
 
 	render() {
-		const {todos, onDone} = this.props;
-
-		
+		const {todos, onDone, onRemove, onEdit, edit} = this.props;
 
 		const itemList = todos.map((item, idx) => {
 			const itemKey = item.val + '-' + idx;
@@ -45,12 +47,17 @@ export default class TodoListItem extends Component {
 							</label>
 						</div>
 						<div className="item__message">
-							{item.val}
+							{ edit ? (
+								<EditForm />
+							) : (
+								<div className="item__message-text">{item.val}</div>
+							)}							
 						</div>
-						<div className="item__events">
-							<i className="edit-item fa fa-edit"></i>
-							<i className="remove-item fa fa-close"></i>
-						</div>
+						<Events 
+							id={item.id}
+							onRemove={onRemove}
+							onEdit={this.onEdit}
+						/>
 					</div>
 				</li>
 			)

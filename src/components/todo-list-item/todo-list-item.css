@@ -10,7 +10,7 @@
 	color: #d4d4d4;
 }
 
-.item.isDone .item__events i {
+.item.isDone .events i {
 	color: #d4d4d4;
 }
 
@@ -70,33 +70,4 @@
 	line-height: 24px;
 	font-family: 'Arial';
 	word-break: break-all;
-}
-
-.item__events {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	margin: auto 0;
-	display: flex;
-	align-items: center;
-	width: 40px;
-	height: 40px;
-}
-
-.item__events i {
-	margin-left: 10px;
-	cursor: pointer;
-	transition: color .3s ease;
-}
-.item__events i:hover {
-	color: green;
-}
-
-.item__events i.edit-item {
-	margin-top: 2px;
-}
-
-.item__events i:first-child {
-	margin-left: 0;
 }
