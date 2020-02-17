@@ -1,7 +1,7 @@
 .events {
 	position: absolute;
 	top: 0;
-	right: 0;
+	right: 10px;
 	bottom: 0;
 	margin: auto 0;
 	display: flex;

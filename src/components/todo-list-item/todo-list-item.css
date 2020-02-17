@@ -1,8 +1,7 @@
 
 .item {
 	position: relative;
-	padding: 15px 0;
-	border-bottom: 1px solid #d4d4d4;
+	padding: 15px 10px;
 }
 
 .item.isDone .item__message {
@@ -19,7 +18,7 @@
 	top: 0;
 	bottom: 0;
 	margin: auto 0;
-	width: 40px;
+	width: 30px;
 	height: 40px;
 }
 
@@ -65,7 +64,7 @@
 
 
 .item__message {
-	padding:4px 60px 4px 40px;
+	padding:4px 60px 4px 35px;
 	font-size: 18px;
 	line-height: 24px;
 	font-family: 'Arial';

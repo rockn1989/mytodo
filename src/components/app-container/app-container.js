@@ -3,7 +3,8 @@ import './app-container.css';
 
 import ItemAddForm from '../item-add-form';
 import TodoList from '../todo-list';
-
+import TodoSort from '../todo-sort';
+import TodoCounter from '../todo-counter';
 
 const replaceChildren = (container, oldChild, newChild) => {
 	container.replaceChild(newChild, oldChild);
@@ -27,19 +28,23 @@ export default class App extends Component {
 					id: 1
 				}
 			],
-			edit: false
+			edit: false,
+			field: `all`
 		};
 
 		this.onItemAdded = this.onItemAdded.bind(this);
+		this.onCheckAll = this.onCheckAll.bind(this);
 		this.onDone = this.onDone.bind(this);
 		this.onRemove = this.onRemove.bind(this);
 		this.onEdit = this.onEdit.bind(this);
+		this.onSortChange = this.onSortChange.bind(this);
+		this.onSort = this.onSort.bind(this);
 	};
 
 	onItemAdded(item) {
 		const newItem = {
 			val: item,
-			done: false,
+			done: Boolean(Math.round(Math.random() * 1)),
 			id: ++this.itemId
 		};
 
@@ -51,6 +56,19 @@ export default class App extends Component {
 			}
 		});
 	};
+
+	onCheckAll(val) {
+		this.setState(({todos}) => {
+			const newArray = todos.map((item) => {
+				item.done = val;
+				return item;
+			});
+
+			return {
+				todos: newArray
+			}
+		});
+	}
 
 	onDone(idx) {
 		this.setState(({todos}) => {
@@ -114,20 +132,47 @@ export default class App extends Component {
 		});	 */
 	}
 
+	onSortChange(field) {
+		this.setState({field: field});
+	}
+
+	onSort(array, field) {
+
+		switch (field) {
+			case `active`: 
+				return array.filter(({ done }) => !done);
+			case `completed`: 
+				return array.filter(({ done }) => done);
+			default:
+				return array;
+		};
+	}
+
 	render() {
-		const {todos, edit} = this.state;
+		const {edit, field} = this.state;
+		const todos = this.onSort(this.state.todos, field);
+
 		return (
 			<div className="todo">
-				<ItemAddForm onItemAdded={this.onItemAdded}/>
+				<ItemAddForm 
+					onItemAdded={this.onItemAdded}
+					onCheckAll={this.onCheckAll}
+				/>
 				{todos.length > 0 &&
+				<div className="todo-wrapper">
 					<TodoList 
 						todos={todos}
 						edit={edit}
 						onDone={this.onDone}
 						onRemove={this.onRemove}
-						onEdit={this.onEdit}
+						onEdit={this.onEdit} 
 					/>
+				</div>
 				}
+				<div className="todo-bottom-toolbar">
+					<TodoCounter todos={todos.length} />
+					<TodoSort field={field} onSort={this.onSortChange} />
+				</div>
 			</div>
 		);
 	}

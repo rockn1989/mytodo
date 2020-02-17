@@ -1,0 +1,23 @@
+.todo-sort {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	font-family: 'Arial';
+}
+
+.todo-sort li {
+	margin-right: 10px;
+}
+
+.todo-sort li a {
+	padding: 3px 6px;
+	display: block;
+	color: #000000;
+	text-decoration: none;
+	border: 1px solid transparent;
+}
+.todo-sort li a.active,
+.todo-sort li a:hover {
+	border-color: #d4d4d4;
+}
