@@ -11,6 +11,7 @@
 
 .item.isDone .events i {
 	color: #d4d4d4;
+	cursor: no-drop;
 }
 
 .item__checkbox {
@@ -36,6 +37,11 @@
 .item__checkbox input[type="checkbox"]:checked ~ .custom-checkbox:after {
 	transform: scale(1) rotate(45deg);
 }
+
+.item__checkbox input[type="checkbox"]:disabled ~ .custom-checkbox {
+	display: none;
+}
+
 
 .custom-checkbox {
 	position: absolute;

@@ -2,19 +2,20 @@ import React from 'react';
 import './events.css';
 
 const Events = (props) => {
-	const {onRemove, onEdit, id} = props;
+	const {onRemove, onEdit, isChecked, id} = props;
+
 	return (
 		<div className="events">
 			<i 
 				className="event-item-edit fa fa-edit"
 				onClick={() => {
-					onEdit(id)
+					return isChecked ? false : onEdit(id);
 				}}
 			></i>
 			<i 
 				className="event-item-remove fa fa-close"
 				onClick={() => {
-					onRemove(id)
+					return isChecked ? false : onRemove(id);
 				}}
 			></i>
 		</div>

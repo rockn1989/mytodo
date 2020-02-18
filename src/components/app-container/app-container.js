@@ -19,15 +19,16 @@ export default class App extends Component {
 				{
 					val: `test`,
 					done: false,
-					id: 0
+					id: 0,
+					edit: false
 				},
 				{
 					val: `test2`,
 					done: true,
-					id: 1
+					id: 1,
+					edit: false
 				}
 			],
-			edit: false,
 			field: `all`
 		};
 
@@ -44,7 +45,8 @@ export default class App extends Component {
 		const newItem = {
 			val: item,
 			done: Boolean(Math.round(Math.random() * 1)),
-			id: ++this.itemId
+			id: ++this.itemId,
+			edit: false
 		};
 
 		this.setState(({ todos }) => {
@@ -94,23 +96,17 @@ export default class App extends Component {
 		});
 	}
 
-	onEdit() {
-		this.setState({
-			edit: !this.state.edit
-		});
-		/* 		this.setState(({ todos }) => {
+	onEdit(idx,...val) {
+		
+		this.setState(({ todos }) => {
+			const itemVal = val;
 			const todoId = todos.findIndex((el) => el.id === idx);
 			const oldItem = todos[todoId]
-			const oldHTMLItem = document.getElementById(idx);
-			const wrapper = oldHTMLItem.querySelector(`.item__message`);
-			const textNode = oldHTMLItem.querySelector(`.item__message-text`);
-			const input = document.createElement(`input`);
-			replaceChildren(wrapper, textNode, <EditForm/>);
-			input.setAttribute(`value`, oldItem.val)
-			input.focus();
+
  			const newItem = {
 				...oldItem,
-				done: !oldItem.done
+				edit: !oldItem.edit,
+				val: itemVal.length > 0 ? itemVal[0] : oldItem.val
 			};
 
 			return {
@@ -120,7 +116,7 @@ export default class App extends Component {
 					...todos.slice(todoId + 1)
 				]
 			} 
-		});	 */
+		});	
 	}
 
 	onSortChange(field) {
@@ -139,7 +135,7 @@ export default class App extends Component {
 	}
 
 	render() {
-		const { edit, field } = this.state;
+		const {field} = this.state;
 		const todos = this.onSort(this.state.todos, field);
 
 		return (
@@ -152,7 +148,6 @@ export default class App extends Component {
 					<div className="todo-wrapper">
 						<TodoList
 							todos={todos}
-							edit={edit}
 							onDone={this.onDone}
 							onRemove={this.onRemove}
 							onEdit={this.onEdit}

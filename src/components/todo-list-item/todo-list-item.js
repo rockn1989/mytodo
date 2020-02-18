@@ -4,20 +4,9 @@ import EditForm from '../edit-form';
 import './todo-list-item.css';
 
 export default class TodoListItem extends Component {
-	constructor() {
-		super();
-		this.state = {
-			edit: false
-		}
-		this.onEdit = this.onEdit.bind(this);
-	};
-
-	onEdit(status) {
-
-	}
 
 	render() {
-		const {todos, onDone, onRemove, onEdit, edit} = this.props;
+		const {todos, onDone, onRemove, onEdit} = this.props;
 
 		const itemList = todos.map((item, idx) => {
 			const itemKey = item.val + '-' + idx;
@@ -42,21 +31,27 @@ export default class TodoListItem extends Component {
 									onChange={()=>{ 
 										onDone(item.id)
 									}}
+									disabled={item.edit ? true : false}
 								></input>
 								<span className="custom-checkbox"></span>
 							</label>
 						</div>
 						<div className="item__message">
-							{ edit ? (
-								<EditForm />
+							{ item.edit ? (
+								<EditForm 
+									item={item}
+									onEdit={onEdit}
+								/>
 							) : (
 								<div className="item__message-text">{item.val}</div>
 							)}							
 						</div>
 						<Events 
 							id={item.id}
+							edit={item.edit}
+							isChecked={itemState.checked}
 							onRemove={onRemove}
-							onEdit={this.onEdit}
+							onEdit={onEdit}
 						/>
 					</div>
 				</li>
