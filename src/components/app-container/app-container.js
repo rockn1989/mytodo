@@ -6,29 +6,12 @@ import TodoList from "../todo-list";
 import TodoSort from "../todo-sort";
 import TodoCounter from "../todo-counter";
 
-const replaceChildren = (container, oldChild, newChild) => {
-	container.replaceChild(newChild, oldChild);
-};
-
 export default class App extends Component {
 	constructor() {
 		super();
 		this.itemId = 100;
 		this.state = {
-			todos: [
-				{
-					val: `test`,
-					done: false,
-					id: 0,
-					edit: false
-				},
-				{
-					val: `test2`,
-					done: true,
-					id: 1,
-					edit: false
-				}
-			],
+			todos: [],
 			field: `all`
 		};
 
@@ -41,6 +24,25 @@ export default class App extends Component {
 		this.onSort = this.onSort.bind(this);
 	}
 
+	componentDidMount() {
+
+		const data = localStorage.getItem(`data`);
+
+		if (data) {
+			this.setState(({ todos }) => {
+				const newArray = JSON.parse(data)
+				return {
+					todos: newArray
+				};
+			})
+		};
+
+	}
+
+	onSetLocalStorage(key, value) {
+		localStorage.setItem(key, JSON.stringify(value));
+	}
+
 	onItemAdded(item) {
 		const newItem = {
 			val: item,
@@ -48,10 +50,13 @@ export default class App extends Component {
 			id: ++this.itemId,
 			edit: false
 		};
-
-		this.setState(({ todos }) => {
-			const newArray = [...todos];
+		
+		this.setState(({todos}) => {
+			const newArray = todos.length > 0 ? [...todos] : [];
 			newArray.push(newItem);
+
+			this.onSetLocalStorage(`data`, newArray);
+
 			return {
 				todos: newArray
 			};
@@ -72,26 +77,34 @@ export default class App extends Component {
 	}
 
 	onDone(idx) {
-		this.setState(({ todos }) => {
+		this.setState(({todos}) => {
 			const todoId = todos.findIndex(el => el.id === idx);
 			const oldItem = todos[todoId];
+
 			const newItem = {
 				...oldItem,
 				done: !oldItem.done
 			};
 
+			const newArray = [...todos.slice(0, todoId), newItem, ...todos.slice(todoId + 1)]
+
+			this.onSetLocalStorage(`data`, newArray);
+
 			return {
-				todos: [...todos.slice(0, todoId), newItem, ...todos.slice(todoId + 1)]
+				todos: newArray
 			};
 		});
 	}
 
 	onRemove(idx) {
-		this.setState(({ todos }) => {
+		this.setState(({todos}) => {
 			const todoId = todos.findIndex(el => el.id === idx);
+			const newArray = [...todos.slice(0, todoId), ...todos.slice(todoId + 1)];
+
+			this.onSetLocalStorage(`data`, newArray);
 
 			return {
-				todos: [...todos.slice(0, todoId), ...todos.slice(todoId + 1)]
+				todos: newArray
 			};
 		});
 	}
@@ -109,12 +122,12 @@ export default class App extends Component {
 				val: itemVal.length > 0 ? itemVal[0] : oldItem.val
 			};
 
+			const newArray = [...todos.slice(0, todoId), newItem, ...todos.slice(todoId + 1)];
+
+			this.onSetLocalStorage(`data`, newArray);
+
 			return {
-				todos: [
-					...todos.slice(0, todoId),
-					newItem,
-					...todos.slice(todoId + 1)
-				]
+				todos: newArray
 			} 
 		});	
 	}
@@ -126,9 +139,9 @@ export default class App extends Component {
 	onSort(array, field) {
 		switch (field) {
 			case `active`:
-				return array.filter(({ done }) => !done);
+				return array.filter(({done}) => !done);
 			case `completed`:
-				return array.filter(({ done }) => done);
+				return array.filter(({done}) => done);
 			default:
 				return array;
 		}
